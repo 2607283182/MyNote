@@ -1,0 +1,1 @@
+META-INF下有个MANIFEST.MF文件，这个文件的Main-Class 记录了当使用 java -jar XXX.jar 这个Jar包中的启动类类名。

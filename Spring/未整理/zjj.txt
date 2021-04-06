@@ -1,0 +1,37 @@
+@ConfigurationProperties
+非正常流程...
+postProcessBeforeInstantiation
+	- AbstractAutoProxyCreator
+	- CommonAnnotationBeanPostProcessor
+	- ScriptFactoryPostProcessor
+
+postProcessAfterInitialization
+	- AbstractAdvisingBeanPostProcessor -> AbstractBeanFactoryAwareAdvisingPostProcessor -> AsyncAnnotationBeanPostProcessor
+																					     -> MethodValidationPostProcessor
+	- AbstractAutoProxyCreator		
+    - AdvisorAdapterRegistrationManager
+	- ApplicationListenerDetector
+	- ScheduledAnnotationBeanPostProcessor
+
+正常流程
+MergedBeanDefinitionPostProcessor
+	- ApplicationListenerDetector
+	- AutowiredAnnotationBeanPostProcessor
+	- CommonAnnotationBeanPostProcessor
+	- InitDestroyAnnotationBeanPostProcessor
+	- RequiredAnnotationBeanPostProcessor
+	- ScheduledAnnotationBeanPostProcessor
+
+postProcessAfterInstantiation 返回 true或false 可以控制终止populateBean
+
+InstantiationAwareBeanPostProcessor 的 postProcessProperties , postProcessPropertyValues
+
+invokeAwareMethods
+
+applyBeanPostProcessorsBeforeInitialization
+
+invokeInitMethods
+
+applyBeanPostProcessorsAfterInitialization
+
+SmartInstantiationAwareBeanPostProcessor getEarlyBeanReference
