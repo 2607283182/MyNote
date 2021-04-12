@@ -1,0 +1,10 @@
+## 为什么弱引用
+
+我这么给你解释一下吧首先，你在使用ThreadLocal的时候，肯定会在你的代码里new一个出来，给你描述一下这时候的情况这时候，在堆中会产生一个ThreadLocal对象的实例，然后你因为你写的代码里是new出来的，所以现在有一个指向你堆中ThreadLocal实例的强引用好了，现在你要开始set一个属性！假如你set了一个String类型的变量，我再给你描述一下情况：threadlocal的set属性，实际上是在当前线程的Thread类里，有一个ThreadLocalMap的Map，ThreadLocal实例以自己的内存地址为key，你set的值为value，向这个map中添加了一堆键值对如果你看过Thread的源码的话，你应该能很清楚，如果你不清楚上述的过程，请看一下源码ok，那么现在的情况是，有一个强引用和一个弱引用指向这个ThreadLocal实例根据jvm的回收机制，你可以知道，因为有强引用指着它，它是绝对不会被回收的，那么它被回收只有一种状况你那个强引用的变量，不想指向这个ThreadLocal实例了，他换了一个实例去指向，或者你直接给他变成null了那么这时，这个ThreadLocal实例就只有一个弱引用在指向着了，如果这时候发生GC的话，不是很好理解了吗，你的代码里没有指向这个实例了，只剩map里的那个弱引用还指着，这也没啥用了，就给回收了，所以说，当你代码里用到这个实例的时候它是绝对不会被回收的！
+
+## 内存泄漏怎么办
+1. 每次使用完ThreadLocal都调用它的remove()方法清除数据
+2. 将ThreadLocal变量定义成private static，这样就一直存在ThreadLocal的强引用，也就能保证任何时候都能通过ThreadLocal的弱引用访问到Entry的value值，进而清除掉 。
+
+## Map和hashmap不同
+和普通Hashmap类似存储在一个数组内，但与hashmap使用的拉链法解决散列冲突的是 ThreadLocalMap使用开放地址法
